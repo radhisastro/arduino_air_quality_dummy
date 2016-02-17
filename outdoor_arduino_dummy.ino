@@ -23,23 +23,30 @@ ZBTxRequest zbTx = ZBTxRequest(addr64, payload, sizeof(payload));
 //ZBTxRequest zbTx = ZBTxRequest(addr64, (uint8_t *)buff, strlen(buff));
 //create the Tx request
 
-//Dummy
-float lat = -7.766052;
-float lon = 110.3715927;
-float temp = random(20, 40);
-float hum = random(50, 60);
-float co2 = random(300, 700);
-float co = random(50, 100);
-float batere = 30.3;
-
-
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
   xbee.setSerial(Serial);
 }
 
-void sendPacket() {
+void getValue() {
+  //Dummy
+  float lat = -7.766052;
+  float lon = 110.3715927;
+  float temp = random(20, 40);
+  float hum = random(50, 60);
+  float co2 = random(300, 700);
+  float co = random(50, 100);
+  float batere = 30.3;
+
+  Serial.println(lat);
+  Serial.println(lon);
+  Serial.println(temp);
+  Serial.println(hum);
+  Serial.println(co2);
+  Serial.println(co);
+  Serial.println(batere);
+
   // convert humidity into a byte array and copy it into the payload array
   u.fval = lat;
   for (int i = 0; i < 4; i++) {
@@ -69,14 +76,18 @@ void sendPacket() {
   for (int i = 0; i < 4; i++) {
     payload[i + 24] = u.b[i];
   }
-  
+}
+
+void sendPacket() {
   ZBTxRequest zbTx = ZBTxRequest(addr64, payload, sizeof(payload));
   xbee.send(zbTx);
+  Serial.println("data sent");
 }
 
 void loop() {
+  getValue();
   sendPacket();
-  delay(300000);
+  delay(600000);
 }
 
 
